@@ -12,8 +12,9 @@
    <i>Note: using a virtual environment is not strictly necessary to run napview, but is highly recommended to ensure compatibility.</i><br>
 
    - Open a terminal or command prompt and navigate to the directory where you want to create the venv and run:
-     
-     python -m venv napview_venv
+
+    python -m venv napview_venv
+
 
 <i>Note: This will require approx. 800MB of hard drive space.</i><br>
 
@@ -84,7 +85,7 @@ If you would like to contribute to napview, please refer to our [Contributing Gu
 
 ## License
 
-napview is released under the [BSD-3 Clause License]
+napview is released under the [BSD-3 Clause License](https://github.com/napview/napview/blob/main/LICENSE).
 
 
 ## Contact
