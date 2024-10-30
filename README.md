@@ -1,26 +1,40 @@
-# <i>napview</i>: real-time sleep scoring and analysis
 
-```napview``` is a powerful and user-friendly software for sleep scoring in the sleep lab. It provides a real-time interface to machine learning tools for sleep data analysis.<br>
+# <i>napview</i>: real-time sleep scoring and analysis visualizer
+### v0.1beta:<br> 
+```napview``` is a powerful and user-friendly software for automatic sleep scoring in the sleep lab. It provides a real-time interface to machine learning tools for sleep data analysis.<br>
+
+```napview``` uses machine learning models to infer sleep parameters from incoming EEG data and visualizes the classifier output, quantifying e.g., the probability of a sleep study participant to be in a particular sleep stage. 
+
+```napview``` runs independently of existing lab setups. 
+
+
 
 ## Installation
 
-**1.** Make sure you have [```Python 3.8```](https://www.python.org/downloads/) or later installed on your system. [```pip```](https://pip.pypa.io/en/stable/installation/) and [```venv```](https://docs.python.org/3/library/venv.html) is normally included, otherwise, install manually. <br>
+**1. Make sure you have [```Python 3.8```](https://www.python.org/downloads/) or later installed on your system.**<br>
 
 
-**2.** Create a new virtual environment (venv):
+**2. Clone the repository:**
+   
+Open a terminal or command prompt and and run:
 
-<i>Note: using a virtual environment is not strictly necessary to run napview, but is strongly recommended to ensure compatibility.</i><br>
+   ```
+   git clone https://github.com/paulzerr/napview_beta/
+   cd napview_beta
+   ```
 
-Open a terminal or command prompt and navigate to the directory where you want to create the venv and run:
+**2.** Create a new virtual environment:
 
-    python -m venv napview_venv
+    python3 -m venv napview/napview_venv
+
+<i>Note: using a virtual environment is not strictly necessary to run napview, but is strongly recommended to ensure compatibility. This will require up to 1GB of hard drive space.</i><br>
 
 
-<i>Note: This will require approx. 800MB of hard drive space.</i><br>
+**3. Activate the virtual environment:**
 
-**3.** Activate the virtual environment:
+Navigate to the location where you installed the virtual environment:
 
-   macOS and Linux:
+   Linux and macOS:
      
      source napview_venv/bin/activate
 
@@ -28,21 +42,21 @@ Open a terminal or command prompt and navigate to the directory where you want t
 
      napview_venv\Scripts\activate
 
-**4.** Clone and install the repository:
+**4. Install the repository:**
    
    ```
-   git clone https://github.com/paulzerr/tester2/
-   cd tester2
    pip install .
    ```
 
-**5.** Start napview from a terminal or command prompt:
+**5. Start napview**
+
+From a terminal or command prompt:
    
    ```
    napview
    ```
 
-**6.** Alternatively start napview by executing the napview.py script.
+Alternatively:
 
    ```
    python3 -m napview.py
@@ -82,28 +96,28 @@ These packages and their dependencies will automatically be installed via pip. O
 
 ## Compatibility 
 
-- ```napview``` has been tested with BrainVision EEG amplifiers on Kubuntu 24 Linux and Python 3.12. 
+- ```napview``` has been tested with BrainVision passive electrode EEG amplifiers on Kubuntu 24 Linux + Windows 10; Python 3.9 + 3.12, but should run on most systems as it is platform independent.
 
-- In principle, any amplifier with real-time streaming capabilities can be used with napview via a [LSL connector script](https://labstreaminglayer.readthedocs.io/info/supported_devices.html). These are available for most EEG amps, or you can create your own.
+- Any amplifier with real-time streaming capabilities can be used with napview via an [LSL connector script](https://labstreaminglayer.readthedocs.io/info/supported_devices.html). These are available for most EEG amps, or you can create your own with a few lines of Python code.
+
+- Napview runs independently of your lab setup. 
 
 - Feel free to contact us for assistance to make napview work in your lab setup.
 
 
+## TODO:
+
+- auto-reject bad channels
+- 
+
 <!-- ## Resources
-
 For detailed tutorials, examples, and additional resources, please refer to the following links:
-
 - [napview Documentation, tutorial and examples](https://napview.readthedocs.io/) -->
 
 
-<!-- ## Contributing
-
-If you would like to contribute to napview, please refer to our [Contributing Guidelines](https://github.com/napview/napview/blob/main/CONTRIBUTING.md).
- -->
-
 ## License
 
-napview is released under the [BSD-3 Clause License](https://github.com/paulzerr/napview_beta/blob/master/LICENSE).
+```napview``` is released under the [BSD-3 Clause License](https://github.com/paulzerr/napview_beta/blob/master/LICENSE).
 
 
 ## Contact
