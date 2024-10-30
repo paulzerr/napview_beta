@@ -16,7 +16,7 @@
 
 **2. Clone the repository:**
    
-Open a terminal or command prompt and and run:
+Open a terminal or command prompt and download napview:
 
    ```
    git clone https://github.com/paulzerr/napview_beta/
@@ -27,12 +27,10 @@ Open a terminal or command prompt and and run:
 
     python3 -m venv napview/napview_venv
 
-<i>Note: using a virtual environment is not strictly necessary to run napview, but is strongly recommended to ensure compatibility. This will require up to 1GB of hard drive space.</i><br>
+<i>Note: using a virtual environment is not strictly necessary, but is strongly recommended to ensure compatibility. Installing napview requires approximately 1GB of hard drive space.</i><br>
 
 
 **3. Activate the virtual environment:**
-
-Navigate to the location where you installed the virtual environment:
 
    Linux and macOS:
      
@@ -44,6 +42,8 @@ Navigate to the location where you installed the virtual environment:
 
 **4. Install napview:**
    
+Ensure that you are in the directory where you cloned the repository, and install:
+
    ```
    pip install .
    ```
@@ -82,13 +82,13 @@ These packages and their dependencies will automatically be installed via pip. O
 
 **2.** Select your EEG amplifier as data source. Or you can try out ```napview``` with the built-in EEG simulator, which streams a recording from an .edf file. You can also connect to any ongoing LSL EEG stream.
 
-**3.** Select your preferred sleep scoring model. U-Sleep is strongly recommended, but requires an API key, which can be requested for free at [https://sleep.ai.ku.dk/](https://sleep.ai.ku.dk/). YASA is an alternative model that doesn't require an API key. It requires about 15 minutes of recording time before it delivers accurate results.
+**3.** Select your preferred sleep scoring model. U-Sleep is strongly recommended, but requires an internet connection and an API key, which can be requested for free at [https://sleep.ai.ku.dk/](https://sleep.ai.ku.dk/). YASA is an alternative model that doesn't require an API key. It needs about 15 minutes of recording time before it delivers accurate results.
 
 **4.** Follow further instructions displayed in red in the Status window on the right (if any).
 
-**5.** When everything is green, click START to begin. A new tab will open with the data visualizers. This will typically be [http://127.0.0.1:8245](http://127.0.0.1:8245). Sleep stage probabilities will be displayed as provided by the classifier, but it will take a few minutes for the sleep scoring output to become reliable.
+**5.** When everything is green, click START to begin. A new tab will open containing the data visualizer. This will typically be at [http://127.0.0.1:8245](http://127.0.0.1:8245). Sleep stage probabilities will be displayed as provided by the classifier, but it will take a few minutes for the sleep scoring output to become reliable. By default a new datapoint is shown every 30 seconds.
 
-Other data can be displayed, such as band power, eye movement or spindle density, heart rate, aperiodic slope, etc.
+Other data can be displayed, such as band power, eye movements, spindle/K density, heart rate, aperiodic slope, etc.
 
 **6.** When you are done with the situation, click SHUTDOWN to end data streaming and save the recording. <br>
 
