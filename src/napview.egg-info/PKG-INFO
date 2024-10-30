@@ -1,0 +1,117 @@
+Metadata-Version: 2.1
+Name: napview
+Version: 0.1.0
+Summary: Napview
+Author: Paul Zerr
+Author-email: zerr.paul@gmail.com
+License: BSD 3-Clause License
+Keywords: napview,sleepscoring
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSES.txt
+Requires-Dist: colorama==0.4.6
+Requires-Dist: Flask==3.0.3
+Requires-Dist: mne==1.7.1
+Requires-Dist: numpy==2.0.0
+Requires-Dist: peewee==3.17.6
+Requires-Dist: pylsl==1.16.2
+Requires-Dist: thread==2.0.5
+Requires-Dist: usleep_api==0.1.3
+Requires-Dist: yasa==0.6.5
+Requires-Dist: setuptools
+Requires-Dist: edfio
+
+# napview: Sleep Staging and Analysis Software
+
+```napview``` is a powerful and user-friendly software for real-time sleep staging in the sleep lab. 
+
+## Installation
+
+**1.** Make sure you have Python 3.8 or later installed on your system. pip and venv is typically included, otherwise, install manually. [Python Downloads](https://www.python.org/downloads/)<br>
+
+
+**2.** Create a new virtual environment (venv):
+
+   <i>Note: using a virtual environment is not strictly necessary to run napview, but is highly recommended to ensure compatibility.</i><br>
+
+   - Open a terminal or command prompt and navigate to the directory where you want to create the venv and run:
+     
+     ```
+     python -m venv napview_venv
+     ```
+   - Activate the virtual environment:
+
+   macOS and Linux:
+     
+     ```
+     source napview_venv/bin/activate
+     ```
+
+   Windows:
+     
+     ```
+     napview_venv\Scripts\activate
+     ```
+
+**3.** Install napview:
+   
+   ```
+   pip install napview
+   ```
+
+**4.** Start napview from a terminal or command prompt:
+   
+   ```
+   napview
+   ```
+
+**5.** Alternatively you can download the github repository, install the dependencies and start napview by executing the napview.py script.
+
+
+
+## Dependencies
+
+These packages will automatically be installed via pip. Otherwise install manually.
+
+pip install mne==1.7.1 yasa==0.6.5 pylsl==1.16.2 peewee==3.17.6 numpy==2.0.0 PyQt6==6.7.0 thread==2.0.5 usleep_api==0.1.3 Flask==3.0.3 
+
+
+
+## Compatibility 
+
+- napview has been tested with BrainVision EEG amplifiers.
+
+- In principle, any amplifier with real-time streaming capabilities can be used with napview via a [LSL connector script](https://labstreaminglayer.readthedocs.io/info/supported_devices.html). These are available for most EEG amps, or you can create your own.
+
+- Feel free to contact us for assistance to make napview work in your lab setup.
+
+
+## Resources
+
+For detailed tutorials, examples, and additional resources, please refer to the following links:
+
+- [napview Documentation, tutorial and examples](https://napview.readthedocs.io/)
+
+
+## Contributing
+
+If you would like to contribute to napview, please refer to our [Contributing Guidelines](https://github.com/napview/napview/blob/main/CONTRIBUTING.md).
+
+
+## License
+
+napview is released under the [MIT License](https://github.com/napview/napview/blob/main/LICENSE).
+
+
+## Contact
+
+If you have any questions, suggestions, or feedback, please feel free to reach out to us:
+
+- Email: paul.zerr [ at ] donders.ru.nl
+- GitHub Issues: [napview/issues](https://github.com/napview/napview/issues)
+

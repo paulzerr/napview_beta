@@ -1,0 +1,11 @@
+colorama==0.4.6
+Flask==3.0.3
+mne==1.7.1
+numpy==2.0.0
+peewee==3.17.6
+pylsl==1.16.2
+thread==2.0.5
+usleep_api==0.1.3
+yasa==0.6.5
+setuptools
+edfio
