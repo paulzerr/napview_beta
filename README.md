@@ -90,5 +90,5 @@ napview is released under the [MIT License](https://github.com/napview/napview/b
 If you have any questions, suggestions, or feedback, please feel free to reach out to us:
 
 - Email: paul.zerr [ at ] donders.ru.nl
-- GitHub Issues: [napview/issues](https://github.com/napview/napview/issues)
+<!-- - GitHub Issues: [napview/issues](https://github.com/napview/napview/issues) -->
 
