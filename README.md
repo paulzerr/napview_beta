@@ -13,33 +13,37 @@
 
    - Open a terminal or command prompt and navigate to the directory where you want to create the venv and run:
      
+     ```
      python -m venv napview_venv
-
+     ```
 
 <i>Note: This will require approx. 800MB of hard drive space.</i><br>
 
    - Activate the virtual environment:
 
    macOS and Linux:
-
+     
+     ```
      source napview_venv/bin/activate
+     ```
 
    Windows:
      
+     ```
      napview_venv\Scripts\activate
-
+     ```
 
 **3.** Install napview:
    
-
+   ```
    pip install napview
-
+   ```
 
 **4.** Start napview from a terminal or command prompt:
    
-
+   ```
    napview
-
+   ```
 
 **5.** Alternatively you can start napview by executing the napview.py script.
 
