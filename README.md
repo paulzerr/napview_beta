@@ -23,7 +23,7 @@ Open a terminal or command prompt and download napview:
    cd napview_beta
    ```
 
-**2.** Create a new virtual environment:
+**2. Create a new virtual environment:** 
 
     python3 -m venv napview/napview_venv
 
