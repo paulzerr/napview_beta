@@ -1,24 +1,24 @@
-# napview: real-time sleep scoring and analysis software
+# <i>napview</i>: real-time sleep scoring and analysis
 
-```napview``` is a powerful and user-friendly software for real-time sleep scoring in the sleep lab. It provides a real-time interface to machine learning tools for sleep data analysis.<br>
+```napview``` is a powerful and user-friendly software for sleep scoring in the sleep lab. It provides a real-time interface to machine learning tools for sleep data analysis.<br>
 
 ## Installation
 
-**1.** Make sure you have Python 3.8 or later installed on your system. pip and venv is typically included, otherwise, install manually. [Python Downloads](https://www.python.org/downloads/)<br>
+**1.** Make sure you have [```Python 3.8```](https://www.python.org/downloads/) or later installed on your system. [```pip```](https://pip.pypa.io/en/stable/installation/) and [```venv```](https://docs.python.org/3/library/venv.html) is normally included, otherwise, install manually. <br>
 
 
 **2.** Create a new virtual environment (venv):
 
-   <i>Note: using a virtual environment is not strictly necessary to run napview, but is highly recommended to ensure compatibility.</i><br>
+<i>Note: using a virtual environment is not strictly necessary to run napview, but is strongly recommended to ensure compatibility.</i><br>
 
-   - Open a terminal or command prompt and navigate to the directory where you want to create the venv and run:
+Open a terminal or command prompt and navigate to the directory where you want to create the venv and run:
 
     python -m venv napview_venv
 
 
 <i>Note: This will require approx. 800MB of hard drive space.</i><br>
 
-   - Activate the virtual environment:
+**3.** Activate the virtual environment:
 
    macOS and Linux:
      
@@ -28,7 +28,7 @@
 
      napview_venv\Scripts\activate
 
-**3.** Clone and install the repository:
+**4.** Clone and install the repository:
    
    ```
    git clone https://github.com/paulzerr/tester2/
@@ -36,13 +36,13 @@
    pip install .
    ```
 
-**4.** Start napview from a terminal or command prompt:
+**5.** Start napview from a terminal or command prompt:
    
    ```
    napview
    ```
 
-**5.** Alternatively you can start napview by executing the napview.py script.
+**6.** Alternatively start napview by executing the napview.py script.
 
    ```
    python3 -m napview.py
@@ -62,9 +62,27 @@ These packages and their dependencies will automatically be installed via pip. O
     edfio==0.4.3
 
 
+## How to use ```napview```
+
+**1.** Open a command window or terminal, type in ```napview``` and hit Enter. This will open the GUI in your default browser, usually at <a href=http://127.0.0.1:8145>http://127.0.0.1:8145</a>. A folder called "napview" will be created in your user directory. Temporary data, logs and output files will be stored there.
+
+**2.** Select your EEG amplifier as data source. Or you can try out ```napview``` with the built-in EEG simulator, which plays back an .edf file.
+
+**3.** Select your preferred sleep scoring model. U-Sleep is strongly recommended, but requires an API key, which can be requested for free at [https://sleep.ai.ku.dk/](https://sleep.ai.ku.dk/)
+
+**4.** Follow further instructions displayed in red in the Status window on the right (if any).
+
+**5.** When everything is green, click START to begin. A new tab will open with the data visualizers. This will typically be [http://127.0.0.1:8245](http://127.0.0.1:8245). Sleep stage probabilities will be displayed as provided by the classifier, but it will take a few minutes for the scoring to become reliable.
+
+**6.** When you are done, click SHUTDOWN to end the recording and save the data. <br>
+
+ <br>
+    
+
+
 ## Compatibility 
 
-- napview has been tested with BrainVision EEG amplifiers.
+- ```napview``` has been tested with BrainVision EEG amplifiers on Kubuntu 24 Linux and Python 3.12. 
 
 - In principle, any amplifier with real-time streaming capabilities can be used with napview via a [LSL connector script](https://labstreaminglayer.readthedocs.io/info/supported_devices.html). These are available for most EEG amps, or you can create your own.
 
@@ -85,7 +103,7 @@ If you would like to contribute to napview, please refer to our [Contributing Gu
 
 ## License
 
-napview is released under the [BSD-3 Clause License](https://github.com/napview/napview/blob/main/LICENSE).
+napview is released under the [BSD-3 Clause License](https://github.com/paulzerr/napview_beta/blob/master/LICENSE).
 
 
 ## Contact
