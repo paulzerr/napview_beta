@@ -27,10 +27,12 @@
 
      napview_venv\Scripts\activate
 
-**3.** Install napview:
+**3.** Clone and install the repository:
    
    ```
-   pip install napview
+   git clone https://github.com/paulzerr/tester2/
+   cd tester2
+   pip install .
    ```
 
 **4.** Start napview from a terminal or command prompt:
