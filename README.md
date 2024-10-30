@@ -1,6 +1,6 @@
 # napview: real-time sleep scoring and analysis software
 
-```napview``` is a powerful and user-friendly software for real-time sleep scoring in the sleep lab. It provides a real-time interface to machine learning tools for sleep data analysis.
+```napview``` is a powerful and user-friendly software for real-time sleep scoring in the sleep lab. It provides a real-time interface to machine learning tools for sleep data analysis.<br>
 
 ## Installation
 
@@ -13,9 +13,7 @@
 
    - Open a terminal or command prompt and navigate to the directory where you want to create the venv and run:
      
-     ```
      python -m venv napview_venv
-     ```
 
 <i>Note: This will require approx. 800MB of hard drive space.</i><br>
 
@@ -23,15 +21,11 @@
 
    macOS and Linux:
      
-     ```
      source napview_venv/bin/activate
-     ```
 
    Windows:
-     
-     ```
+
      napview_venv\Scripts\activate
-     ```
 
 **3.** Install napview:
    
@@ -47,6 +41,9 @@
 
 **5.** Alternatively you can start napview by executing the napview.py script.
 
+   ```
+   python3 -m napview.py
+   ```
 
 
 ## Dependencies
