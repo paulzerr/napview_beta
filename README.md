@@ -68,21 +68,21 @@ These packages and their dependencies will automatically be installed via pip. O
 - Feel free to contact us for assistance to make napview work in your lab setup.
 
 
-## Resources
+<!-- ## Resources
 
 For detailed tutorials, examples, and additional resources, please refer to the following links:
 
-- [napview Documentation, tutorial and examples](https://napview.readthedocs.io/)
+- [napview Documentation, tutorial and examples](https://napview.readthedocs.io/) -->
 
 
-## Contributing
+<!-- ## Contributing
 
 If you would like to contribute to napview, please refer to our [Contributing Guidelines](https://github.com/napview/napview/blob/main/CONTRIBUTING.md).
-
+ -->
 
 ## License
 
-napview is released under the [MIT License](https://github.com/napview/napview/blob/main/LICENSE).
+napview is released under the [BSD-3 Clause License]
 
 
 ## Contact
