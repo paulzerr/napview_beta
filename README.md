@@ -1,6 +1,6 @@
 
 # <i>napview</i>: real-time sleep scoring and analysis visualizer
-### v0.1beta:<br> 
+### v0.1beta<br> 
 ```napview``` is a powerful and user-friendly software for automatic sleep scoring in the sleep lab. It provides a real-time interface to machine learning tools for sleep data analysis.<br>
 
 ```napview``` uses machine learning models to infer sleep parameters from incoming EEG data and visualizes the classifier output, quantifying e.g., the probability of a sleep study participant to be in a particular sleep stage. 
@@ -42,7 +42,7 @@ Navigate to the location where you installed the virtual environment:
 
      napview_venv\Scripts\activate
 
-**4. Install the repository:**
+**4. Install napview:**
    
    ```
    pip install .
@@ -80,15 +80,17 @@ These packages and their dependencies will automatically be installed via pip. O
 
 **1.** Open a command window or terminal, type in ```napview``` and hit Enter. This will open the GUI in your default browser, usually at <a href=http://127.0.0.1:8145>http://127.0.0.1:8145</a>. A folder called "napview" will be created in your user directory. Temporary data, logs and output files will be stored there.
 
-**2.** Select your EEG amplifier as data source. Or you can try out ```napview``` with the built-in EEG simulator, which plays back an .edf file.
+**2.** Select your EEG amplifier as data source. Or you can try out ```napview``` with the built-in EEG simulator, which streams a recording from an .edf file. You can also connect to any ongoing LSL EEG stream.
 
-**3.** Select your preferred sleep scoring model. U-Sleep is strongly recommended, but requires an API key, which can be requested for free at [https://sleep.ai.ku.dk/](https://sleep.ai.ku.dk/)
+**3.** Select your preferred sleep scoring model. U-Sleep is strongly recommended, but requires an API key, which can be requested for free at [https://sleep.ai.ku.dk/](https://sleep.ai.ku.dk/). YASA is an alternative model that doesn't require an API key. It requires about 15 minutes of recording time before it delivers accurate results.
 
 **4.** Follow further instructions displayed in red in the Status window on the right (if any).
 
-**5.** When everything is green, click START to begin. A new tab will open with the data visualizers. This will typically be [http://127.0.0.1:8245](http://127.0.0.1:8245). Sleep stage probabilities will be displayed as provided by the classifier, but it will take a few minutes for the scoring to become reliable.
+**5.** When everything is green, click START to begin. A new tab will open with the data visualizers. This will typically be [http://127.0.0.1:8245](http://127.0.0.1:8245). Sleep stage probabilities will be displayed as provided by the classifier, but it will take a few minutes for the sleep scoring output to become reliable.
 
-**6.** When you are done, click SHUTDOWN to end the recording and save the data. <br>
+Other data can be displayed, such as band power, eye movement or spindle density, heart rate, aperiodic slope, etc.
+
+**6.** When you are done with the situation, click SHUTDOWN to end data streaming and save the recording. <br>
 
  <br>
     
@@ -96,7 +98,7 @@ These packages and their dependencies will automatically be installed via pip. O
 
 ## Compatibility 
 
-- ```napview``` has been tested with BrainVision passive electrode EEG amplifiers on Kubuntu 24 Linux + Windows 10; Python 3.9 + 3.12, but should run on most systems as it is platform independent.
+- ```napview``` has been tested with BrainVision passive electrode EEG amplifiers on Kubuntu 24 Linux + Windows 10; Python 3.9 + 3.12, but should run on most systems as it is platform independent. Any system able to run python3 and a web browser should be compatible.
 
 - Any amplifier with real-time streaming capabilities can be used with napview via an [LSL connector script](https://labstreaminglayer.readthedocs.io/info/supported_devices.html). These are available for most EEG amps, or you can create your own with a few lines of Python code.
 
@@ -108,6 +110,7 @@ These packages and their dependencies will automatically be installed via pip. O
 ## TODO:
 
 - auto-reject bad channels
+- add requirements.txt for manual install
 - 
 
 <!-- ## Resources
@@ -122,7 +125,7 @@ For detailed tutorials, examples, and additional resources, please refer to the 
 
 ## Contact
 
-If you have any questions, suggestions, or feedback, please feel free to reach out to us:
+If you have any questions, suggestions, or feedback, please feel free to reach out:
 
 - Email: paul.zerr [ at ] donders.ru.nl
 <!-- - GitHub Issues: [napview/issues](https://github.com/napview/napview/issues) -->
