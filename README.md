@@ -31,7 +31,7 @@ or
 
     python3 -m venv napview_venv
 
-<i>Note: using a virtual environment is not strictly necessary, but is strongly recommended to ensure compatibility. Installing napview requires approximately 1GB of hard drive space.</i><br>
+<i>Note: using a virtual environment is not strictly necessary, but is strongly recommended to ensure compatibility. Installing napview requires approximately 350MB of hard drive space.</i><br>
 
 
 **3. Activate the virtual environment:**
@@ -105,6 +105,36 @@ Other data can be displayed, such as band power, eye movements, spindle/K densit
  <br>
     
 
+## Using napview with OpenBCI GUI
+
+**1.** If you want to concurrently use the OpenBCI GUI, start the data stream, open the Networking widget and select the LSL protocol. 
+
+**2.** In Stream 1, select TimeSeriesRaw as Data Type.
+
+**3.** Click "Start LSL stream".
+
+**4.** In napview, select CustomLSL stream as Data Source and enter the stream name.
+
+
+## Using napview with OpenBCI directly
+
+**1.** If you want to directly connect to an OpenBCI board, you can simply select your board type and port as Data Source.
+
+
+## Using napview with BrainVision amplifiers
+
+**1.** Start a recent version of Recorder.
+
+**2.** Make sure the RDA plugin is activated. You can activate it by going to the Options menu, selecting Data Transfer, and then enabling RDA. This allows external software to access data as it's being recorded.
+
+**3.** Obtain the IP address of the acquisition computer if you want to use napview on a different computer on the network, or the default 127.0.0.1 if you run napview on the same computer.
+
+**4.** Start the data stream in Recorder and select Brainvision as Data Source in napview. Enter the IP.
+
+
+
+
+
 
 ## Compatibility 
 
@@ -120,8 +150,10 @@ Other data can be displayed, such as band power, eye movements, spindle/K densit
 ## TODO:
 
 - auto-reject bad channels
-- add requirements.txt for manual install
-- 
+- allow the user to choose channels for YASA sleep scoring
+- implement spindle, eye movement detection, etc
+- implement alerts for certain events (e.g., arousal)
+- add Docker install option
 
 <!-- ## Resources
 For detailed tutorials, examples, and additional resources, please refer to the following links:
