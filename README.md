@@ -25,11 +25,11 @@ Navigate to a directory of your choice, open a terminal or command prompt and do
 
 **2. Create a new virtual environment:** 
 
-    python -m venv napview/napview_venv
+    python -m venv napview_venv
 
 or
 
-    python3 -m venv napview/napview_venv
+    python3 -m venv napview_venv
 
 <i>Note: using a virtual environment is not strictly necessary, but is strongly recommended to ensure compatibility. Installing napview requires approximately 1GB of hard drive space.</i><br>
 
