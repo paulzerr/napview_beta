@@ -1,12 +1,3 @@
-
---- major todo's:
-
-- fix python 3.13
-   - try specifying newest versions of things
-   - try installing only the required sub-bits of packages
-- test on different versions + windows
-- make docker
-
 # <i>napview</i>: real-time sleep scoring and analysis visualizer
 ### v0.1beta<br> 
 ```napview``` is a powerful and user-friendly software for automatic sleep scoring in the sleep lab. It provides a real-time interface to machine learning tools for sleep data analysis.<br>
