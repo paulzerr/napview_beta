@@ -5,6 +5,7 @@ import json
 import numpy as np
 import mne
 
+
 try:
     from database_handler import DatabaseHandler
     from helpers import configure_logger, ConfigManager
@@ -31,10 +32,6 @@ class Analyzer:
 
         self.db_handler = DatabaseHandler(self.base_path)
         self.db_handler.setup_database(self.db_file_path, create_tables=False)
-
-        if self.mode == 'yasa_analyzer' or self.mode == 'YASA':
-            import yasa
-            self.yasa = yasa
 
         if self.mode == 'U-Sleep':
             from usleep_api import USleepAPI
@@ -137,6 +134,11 @@ class Analyzer:
 
     def analyze_epoch_yasa(self, start_time):
 
+        try:
+            from yasa_staging_minimal import bandpower
+        except:
+            from .yasa_staging_minimal import bandpower
+
         def find_channel(channels, options):
             for option in options:
                 for ch in channels:
@@ -144,22 +146,20 @@ class Analyzer:
                         return ch
             return None
 
-
-
         try:
             bandpower_channel_name = find_channel(self.raw.ch_names, ["c3", "c4", "o1", "o2"])
             if not bandpower_channel_name:
                 bandpower_channel_name = self.raw.ch_names[0]
 
-            spindle_channel_name = find_channel(self.raw.ch_names, ["c3", "c4"])
-            if not spindle_channel_name:
-                spindle_channel_name = self.raw.ch_names[0]
+            # spindle_channel_name = find_channel(self.raw.ch_names, ["c3", "c4"])
+            # if not spindle_channel_name:
+            #     spindle_channel_name = self.raw.ch_names[0]
 
-            eye_movement_channel_name = find_channel(self.raw.ch_names, ["eog"])
-            if not eye_movement_channel_name:
-                eye_movement_channel_name = find_channel(self.raw.ch_names, ["fp1", "fp2"])
-            if not eye_movement_channel_name:
-                eye_movement_channel_name = self.raw.ch_names[0]
+            # eye_movement_channel_name = find_channel(self.raw.ch_names, ["eog"])
+            # if not eye_movement_channel_name:
+            #     eye_movement_channel_name = find_channel(self.raw.ch_names, ["fp1", "fp2"])
+            # if not eye_movement_channel_name:
+            #     eye_movement_channel_name = self.raw.ch_names[0]
 
             if bandpower_channel_name in ["c3", "c4"]:
                 try:
@@ -170,18 +170,18 @@ class Analyzer:
                     self.logger.warning(f'Analyzer: YASA: Failed to calculate noise level for bandpower channels: {e}', exc_info=True)
                     bandpower_channel_name = self.raw.ch_names[0]
 
-            if spindle_channel_name in ["c3", "c4"]:
-                try:
-                    c3_noise = self.calculate_noise_level(self.raw.copy().pick(["c3"]).get_data())
-                    c4_noise = self.calculate_noise_level(self.raw.copy().pick(["c4"]).get_data())
-                    spindle_channel_name = "c3" if c3_noise < c4_noise else "c4"
-                except Exception as e:
-                    self.logger.warning(f'Analyzer: YASA: Failed to calculate noise level for spindle channels: {e}', exc_info=True)
-                    spindle_channel_name = self.raw.ch_names[0]
+            # if spindle_channel_name in ["c3", "c4"]:
+            #     try:
+            #         c3_noise = self.calculate_noise_level(self.raw.copy().pick(["c3"]).get_data())
+            #         c4_noise = self.calculate_noise_level(self.raw.copy().pick(["c4"]).get_data())
+            #         spindle_channel_name = "c3" if c3_noise < c4_noise else "c4"
+            #     except Exception as e:
+            #         self.logger.warning(f'Analyzer: YASA: Failed to calculate noise level for spindle channels: {e}', exc_info=True)
+            #         spindle_channel_name = self.raw.ch_names[0]
 
             bandpower_channel = self.raw.copy().pick([bandpower_channel_name]).apply_function(self.volts_to_microvolts)
-            spindle_channel = self.raw.copy().pick([spindle_channel_name]).apply_function(self.volts_to_microvolts)
-            eye_movement_channel = self.raw.copy().pick([eye_movement_channel_name]).apply_function(self.volts_to_microvolts)
+            #spindle_channel = self.raw.copy().pick([spindle_channel_name]).apply_function(self.volts_to_microvolts)
+            #eye_movement_channel = self.raw.copy().pick([eye_movement_channel_name]).apply_function(self.volts_to_microvolts)
 
             analysis_result = {
                 'start_time': start_time,
@@ -197,7 +197,7 @@ class Analyzer:
             try:
                 bands = [(0.5, 4, 'Delta'), (4, 8, 'Theta'), (8, 12, 'Alpha'),
                          (12, 16, 'Sigma'), (16, 30, 'Beta'), (30, 40, 'Gamma')]
-                bandpower_df = self.yasa.bandpower(bandpower_channel, bands=bands)
+                bandpower_df = bandpower(bandpower_channel, bands=bands)
                 analysis_result.update({
                     'alpha_power': bandpower_df['Alpha'].mean(),
                     'beta_power': bandpower_df['Beta'].mean(),
@@ -208,11 +208,11 @@ class Analyzer:
             except Exception as e:
                 self.logger.warning(f'Analyzer: YASA: Failed to compute band power: {e}', exc_info=True)
 
-            try:
-                spindles = self.yasa.spindles_detect(spindle_channel)
-                analysis_result['spindles'] = len(spindles) if spindles is not None else 0
-            except Exception as e:
-                self.logger.warning(f'Analyzer: YASA: Failed to detect spindles: {e}', exc_info=True)
+            # try:
+            #     spindles = self.yasa.spindles_detect(spindle_channel)
+            #     analysis_result['spindles'] = len(spindles) if spindles is not None else 0
+            # except Exception as e:
+            #     self.logger.warning(f'Analyzer: YASA: Failed to detect spindles: {e}', exc_info=True)
 
 
             # TODO: fix eye movement detection
@@ -237,6 +237,11 @@ class Analyzer:
             return None
 
     def analyze_epoch_yasa_scorer(self, start_time):
+
+        try:
+            from yasa_staging_minimal import SleepStaging
+        except:
+            from .yasa_staging_minimal import SleepStaging
 
         def find_channels_by_keywords(channels, primary_keywords, fallback_keywords=None, max_channels=2):
             selected_channels = []
@@ -284,7 +289,7 @@ class Analyzer:
 
             raw_microvolts = self.raw.copy().apply_function(self.volts_to_microvolts)
 
-            sls = self.yasa.SleepStaging(raw_microvolts, eeg_name=eeg_channel, eog_name=eog_channel, emg_name=emg_channel)
+            sls = SleepStaging(raw_microvolts, eeg_name=eeg_channel, eog_name=eog_channel, emg_name=emg_channel)
             
             stage_probs = sls.predict_proba()
             latest_epoch_probs = stage_probs.iloc[-1]

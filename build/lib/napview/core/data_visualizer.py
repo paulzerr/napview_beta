@@ -2,6 +2,7 @@ from flask import Flask, render_template, jsonify, request
 import os
 import json
 import webbrowser
+import logging
 
 try:
     from helpers import configure_logger, ConfigManager
@@ -17,6 +18,9 @@ class Visualizer:
     def __init__(self, base_path, mode):
         self.base_path = base_path
         self.app = Flask(__name__)
+        log = logging.getLogger('werkzeug')
+        log.setLevel(logging.ERROR)
+        log.disabled = True
         self.setup_routes()
 
         # setup logging

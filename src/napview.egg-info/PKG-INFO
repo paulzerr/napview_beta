@@ -11,107 +11,164 @@ Classifier: Programming Language :: Python :: 3
 Classifier: Programming Language :: Python :: 3.8
 Classifier: Programming Language :: Python :: 3.9
 Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
 Requires-Python: >=3.8
 Description-Content-Type: text/markdown
+License-File: LICENSE
 License-File: LICENSES.txt
-Requires-Dist: colorama==0.4.6
+Requires-Dist: Scipy==1.14.1
+Requires-Dist: numpy==2.1.2
+Requires-Dist: mne==1.8.0
 Requires-Dist: Flask==3.0.3
-Requires-Dist: mne==1.7.1
-Requires-Dist: numpy==2.0.0
 Requires-Dist: peewee==3.17.6
 Requires-Dist: pylsl==1.16.2
-Requires-Dist: thread==2.0.5
 Requires-Dist: usleep_api==0.1.3
-Requires-Dist: yasa==0.6.5
-Requires-Dist: setuptools
-Requires-Dist: edfio
+Requires-Dist: setuptools==70.3.0
+Requires-Dist: edfio==0.4.3
 
-# napview: Sleep Staging and Analysis Software
 
-```napview``` is a powerful and user-friendly software for real-time sleep staging in the sleep lab. 
+--- major todo's:
+
+- fix python 3.13
+   - try specifying newest versions of things
+   - try installing only the required sub-bits of packages
+- test on different versions + windows
+- make docker
+
+# <i>napview</i>: real-time sleep scoring and analysis visualizer
+### v0.1beta<br> 
+```napview``` is a powerful and user-friendly software for automatic sleep scoring in the sleep lab. It provides a real-time interface to machine learning tools for sleep data analysis.<br>
+
+```napview``` uses machine learning models to infer sleep parameters from incoming EEG data and visualizes the classifier output, quantifying e.g., the probability of a sleep study participant to be in a particular sleep stage. 
+
+```napview``` runs independently of existing lab setups. 
+
+```napview``` is the nightshift experimenter's friend. 
+
 
 ## Installation
 
-**1.** Make sure you have Python 3.8 or later installed on your system. pip and venv is typically included, otherwise, install manually. [Python Downloads](https://www.python.org/downloads/)<br>
+**1. Make sure you have [```Python 3.8```](https://www.python.org/downloads/) or later installed on your system.**<br>
 
 
-**2.** Create a new virtual environment (venv):
+**2. Clone the repository:**
+   
+Navigate to a directory of your choice, open a terminal or command prompt and download napview:
 
-   <i>Note: using a virtual environment is not strictly necessary to run napview, but is highly recommended to ensure compatibility.</i><br>
+   ```
+   git clone https://github.com/paulzerr/napview_beta/
+   cd napview_beta
+   ```
 
-   - Open a terminal or command prompt and navigate to the directory where you want to create the venv and run:
+**2. Create a new virtual environment:** 
+
+    python -m venv napview/napview_venv
+
+or
+
+    python3 -m venv napview/napview_venv
+
+<i>Note: using a virtual environment is not strictly necessary, but is strongly recommended to ensure compatibility. Installing napview requires approximately 1GB of hard drive space.</i><br>
+
+
+**3. Activate the virtual environment:**
+
+   Linux and macOS:
      
-     ```
-     python -m venv napview_venv
-     ```
-   - Activate the virtual environment:
-
-   macOS and Linux:
-     
-     ```
      source napview_venv/bin/activate
-     ```
 
    Windows:
-     
-     ```
+
      napview_venv\Scripts\activate
-     ```
 
-**3.** Install napview:
+**4. Install napview:**
    
+Ensure that you are in the directory where you cloned the repository, and install:
+
    ```
-   pip install napview
+   pip install .
    ```
 
-**4.** Start napview from a terminal or command prompt:
+**5. Start napview**
+
+From a terminal or command prompt:
    
    ```
    napview
    ```
 
-**5.** Alternatively you can download the github repository, install the dependencies and start napview by executing the napview.py script.
+Alternatively:
 
+   ```
+   python3 -m napview.py
+   ```
 
 
 ## Dependencies
 
-These packages will automatically be installed via pip. Otherwise install manually.
+These packages and their dependencies will automatically be installed via pip. Otherwise install manually.
 
-pip install mne==1.7.1 yasa==0.6.5 pylsl==1.16.2 peewee==3.17.6 numpy==2.0.0 PyQt6==6.7.0 thread==2.0.5 usleep_api==0.1.3 Flask==3.0.3 
+    yasa==0.6.5
+    Flask==3.0.3
+    peewee==3.17.6
+    pylsl==1.16.2
+    usleep_api==0.1.3
+    setuptools==70.3.0
+    edfio==0.4.3
 
+
+## How to use ```napview```
+
+**1.** Open a command window or terminal, type in ```napview``` and hit Enter. This will open the GUI in your default browser, usually at <a href=http://127.0.0.1:8145>http://127.0.0.1:8145</a>. A folder called "napview" will be created in your user directory. Temporary data, logs and output files will be stored there.
+
+**2.** Select your EEG amplifier as data source. Or you can try out ```napview``` with the built-in EEG simulator, which streams a recording from an .edf file. You can also connect to any ongoing LSL EEG stream.
+
+**3.** Select your preferred sleep scoring model. U-Sleep is strongly recommended, but requires an internet connection and an API key, which can be requested for free at [https://sleep.ai.ku.dk/](https://sleep.ai.ku.dk/). YASA is an alternative model that doesn't require an API key. It needs about 15 minutes of recording time before it delivers accurate results.
+
+**4.** Follow further instructions displayed in red in the Status window on the right (if any).
+
+**5.** When everything is green, click START to begin. A new tab will open containing the data visualizer. This will typically be at [http://127.0.0.1:8245](http://127.0.0.1:8245). Sleep stage probabilities will be displayed as provided by the classifier, but it will take a few minutes for the sleep scoring output to become reliable. By default a new datapoint is shown every 30 seconds.
+
+Other data can be displayed, such as band power, eye movements, spindle/K density, heart rate, aperiodic slope, etc.
+
+**6.** When you are done with the situation, click SHUTDOWN to end data streaming and save the recording. <br>
+
+ <br>
+    
 
 
 ## Compatibility 
 
-- napview has been tested with BrainVision EEG amplifiers.
+- ```napview``` has been tested with BrainVision passive electrode EEG amplifiers on Kubuntu 24 Linux + Windows 10; Python 3.9 + 3.12, but should run on most systems as it is platform independent. Any system able to run python3 and a web browser should be compatible.
 
-- In principle, any amplifier with real-time streaming capabilities can be used with napview via a [LSL connector script](https://labstreaminglayer.readthedocs.io/info/supported_devices.html). These are available for most EEG amps, or you can create your own.
+- Any amplifier with real-time streaming capabilities can be used with napview via an [LSL connector script](https://labstreaminglayer.readthedocs.io/info/supported_devices.html). These are available for most EEG amps, or you can create your own with a few lines of Python code.
+
+- Napview runs independently of your lab setup. 
 
 - Feel free to contact us for assistance to make napview work in your lab setup.
 
 
-## Resources
+## TODO:
 
+- auto-reject bad channels
+- add requirements.txt for manual install
+- 
+
+<!-- ## Resources
 For detailed tutorials, examples, and additional resources, please refer to the following links:
-
-- [napview Documentation, tutorial and examples](https://napview.readthedocs.io/)
-
-
-## Contributing
-
-If you would like to contribute to napview, please refer to our [Contributing Guidelines](https://github.com/napview/napview/blob/main/CONTRIBUTING.md).
+- [napview Documentation, tutorial and examples](https://napview.readthedocs.io/) -->
 
 
 ## License
 
-napview is released under the [MIT License](https://github.com/napview/napview/blob/main/LICENSE).
+```napview``` is released under the [BSD-3 Clause License](https://github.com/paulzerr/napview_beta/blob/master/LICENSE).
 
 
 ## Contact
 
-If you have any questions, suggestions, or feedback, please feel free to reach out to us:
+If you have any questions, suggestions, or feedback, please feel free to reach out:
 
 - Email: paul.zerr [ at ] donders.ru.nl
-- GitHub Issues: [napview/issues](https://github.com/napview/napview/issues)
+<!-- - GitHub Issues: [napview/issues](https://github.com/napview/napview/issues) -->
 

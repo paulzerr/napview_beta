@@ -1,4 +1,12 @@
 
+--- major todo's:
+
+- fix python 3.13
+   - try specifying newest versions of things
+   - try installing only the required sub-bits of packages
+- test on different versions + windows
+- make docker
+
 # <i>napview</i>: real-time sleep scoring and analysis visualizer
 ### v0.1beta<br> 
 ```napview``` is a powerful and user-friendly software for automatic sleep scoring in the sleep lab. It provides a real-time interface to machine learning tools for sleep data analysis.<br>
@@ -7,6 +15,7 @@
 
 ```napview``` runs independently of existing lab setups. 
 
+```napview``` is the nightshift experimenter's friend. 
 
 
 ## Installation
@@ -16,7 +25,7 @@
 
 **2. Clone the repository:**
    
-Open a terminal or command prompt and download napview:
+Navigate to a directory of your choice, open a terminal or command prompt and download napview:
 
    ```
    git clone https://github.com/paulzerr/napview_beta/
@@ -24,6 +33,10 @@ Open a terminal or command prompt and download napview:
    ```
 
 **2. Create a new virtual environment:** 
+
+    python -m venv napview/napview_venv
+
+or
 
     python3 -m venv napview/napview_venv
 
@@ -38,7 +51,11 @@ Open a terminal or command prompt and download napview:
 
    Windows:
 
-     napview_venv\Scripts\activate
+     napview_venv\Scripts\activate.bat
+
+or, if you're using Powershell:
+
+     napview_venv\Scripts\Activate.ps1
 
 **4. Install napview:**
    
@@ -67,7 +84,9 @@ Alternatively:
 
 These packages and their dependencies will automatically be installed via pip. Otherwise install manually.
 
-    yasa==0.6.5
+    Scipy==1.14.1
+    numpy==2.1.2
+    mne==1.8.0
     Flask==3.0.3
     peewee==3.17.6
     pylsl==1.16.2

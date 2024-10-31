@@ -45,8 +45,8 @@ def load_config_defaults(base_path):
             raise(e)
     
     return {
-        'sim_input_file_path': 'uploaded_eeg.edf',
-        'amp_ip': '131.174.45.239',
+        'sim_input_file_path': 'eeg.edf',
+        'amp_ip': '127.0.0.1',
         'amp_port': 51244,
         'epoch_length': 30,
         'api_token': 'token',
@@ -471,7 +471,8 @@ def main():
 
     # Check if simulation eeg file exists in base_path, if not, copy it from src/napview
     eeg_file_name = 'eeg.edf'
-    src_eeg_file_path = Path(__file__).resolve().parent / 'src/napview' / eeg_file_name
+    src_eeg_file_path = Path(__file__).resolve().parent.parent.parent / 'napview' / eeg_file_name
+
     dest_eeg_file_path = base_path / eeg_file_name
 
     if not dest_eeg_file_path.exists():

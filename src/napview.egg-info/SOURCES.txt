@@ -1,3 +1,4 @@
+LICENSE
 LICENSES.txt
 README.md
 pyproject.toml
@@ -20,6 +21,7 @@ src/napview/core/data_visualizer.py
 src/napview/core/database_handler.py
 src/napview/core/helpers.py
 src/napview/core/napview_backend.py
+src/napview/core/yasa_staging_minimal.py
 src/napview/core/static/channel-modal.js
 src/napview/core/static/channels.txt
 src/napview/core/static/d3_chart.js

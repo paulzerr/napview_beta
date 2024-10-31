@@ -3,16 +3,17 @@ import json
 import multiprocessing
 import webbrowser
 from pathlib import Path
-import socket 
+import socket
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from usleep_api import USleepAPI
-import time 
-from pathlib import Path
+import time
 import mne
-import cgi
 import shutil
 from datetime import datetime, timezone
-import threading 
+import threading
+from email.parser import BytesParser
+from email.policy import default
+
 
 try:
     from data_producer import DataProducer
@@ -43,7 +44,7 @@ def load_config_defaults(base_path):
                 return config_defaults
         except Exception as e:
             raise(e)
-    
+
     return {
         'sim_input_file_path': 'eeg.edf',
         'amp_ip': '127.0.0.1',
@@ -117,18 +118,19 @@ class ProcessManager:
                 kwargs['base_path'] = base_path
                 self.start_process(component, component_class, **kwargs)
 
+
 class NapviewRequestHandler(SimpleHTTPRequestHandler):
     def __init__(self, *args, process_manager=None, base_path=None, config_manager=None, db_handler=None, logger=None, **kwargs):
         self.process_manager = process_manager
-        self.base_path       = base_path
-        self.config_manager  = config_manager
-        self.logger          = logger
-        self.db_handler      = db_handler
+        self.base_path = base_path
+        self.config_manager = config_manager
+        self.logger = logger
+        self.db_handler = db_handler
         super().__init__(*args, **kwargs)
 
     def do_GET(self):
         if self.path == '/':
-            self.path = '/templates/gui.html' 
+            self.path = '/templates/gui.html'
 
         elif self.path == '/load_config':
             with self.config_manager.config_lock:
@@ -139,33 +141,30 @@ class NapviewRequestHandler(SimpleHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(json.dumps(self.config).encode('utf-8'))
             return
-        
+
         try:
             return super().do_GET()
         except BrokenPipeError:
             self.logger.error("BrokenPipeError: Client disconnected before response was fully sent.", exc_info=True)
         except Exception as e:
             self.logger.error(f"Unexpected error: {e}", exc_info=True)
-            
+
     def do_POST(self):
         try:
             if self.path == '/start':
                 ready = True
                 self.config = self.config_manager.load_config(instance=self)
 
-                # Check if the API token is valid
                 if self.config.get('sleep_staging_model') == 'U-Sleep' and not self.validate_usleep_token():
                     self.logger.error(f"GUI: start_attempt: invalid API token")
                     response = {'status': 'error', 'message': 'Invalid API token'}
                     ready = False
 
-                # Check if the EEG file is valid
                 if self.config.get('eeg_amp') == 'Simulator' and not self.validate_eeg_file():
                     self.logger.error(f"GUI: start_attempt: invalid EEG file")
                     response = {'status': 'error', 'message': 'Invalid EEG file'}
                     ready = False
 
-                # Check if any process is already running
                 if self.process_manager.any_process_running():
                     self.logger.error(f"GUI: start_attempt: process already running")
                     response = {'status': 'error', 'message': 'A process is already running'}
@@ -182,7 +181,7 @@ class NapviewRequestHandler(SimpleHTTPRequestHandler):
                         ready = False
                 if ready:
                     self.process_manager.launch_components(self.base_path, self.config_manager, ['analyzer1', 'analyzer2', 'visualizer'])
-                
+
             elif self.path == '/check_eeg_file':
                 self.validate_eeg_file()
                 response = {'status': 'eeg file checked'}
@@ -206,15 +205,12 @@ class NapviewRequestHandler(SimpleHTTPRequestHandler):
                 os.makedirs(output_directory, exist_ok=True)
                 messages = []
 
-                # Save EEG data
                 eeg_result = self.save_eeg_data_as_edf(self.config.get('db_file_path'), output_directory, timestamp)
                 messages.append(eeg_result['message'])
 
-                # Save results files
                 results_result = self.save_results_files(output_directory, timestamp)
                 messages.extend(results_result['messages'])
 
-                # Determine overall success
                 if eeg_result['success'] and results_result['success']:
                     response_status = 'success'
                 elif not eeg_result['success'] and not results_result['success']:
@@ -224,7 +220,6 @@ class NapviewRequestHandler(SimpleHTTPRequestHandler):
 
                 response = {'status': response_status, 'messages': messages}
 
-                # Clean up data directories
                 data_path = os.path.join(self.base_path, "data")
                 directories_to_clean = ['db', 'edfs', 'results']
                 for dirname in directories_to_clean:
@@ -240,7 +235,6 @@ class NapviewRequestHandler(SimpleHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(json.dumps(response).encode('utf-8'))
 
-                # Shutdown the server in a separate thread
                 shutdown_thread = threading.Thread(target=self.shutdown_server)
                 shutdown_thread.start()
                 self.logger.info("Server shut down successfully.")
@@ -256,38 +250,45 @@ class NapviewRequestHandler(SimpleHTTPRequestHandler):
                 response = {'status': 'Configuration updated'}
 
             elif self.path == '/upload_eeg_file':
-                content_type, pdict = cgi.parse_header(self.headers['Content-Type'])
-                if content_type == 'multipart/form-data':
-                    pdict['boundary'] = bytes(pdict['boundary'], "utf-8")
-                    pdict['CONTENT-LENGTH'] = int(self.headers['Content-Length'])
-                    fields = cgi.parse_multipart(self.rfile, pdict)
-                    eeg_file = fields.get('eegFile')
+                content_type = self.headers.get('Content-Type')
+                if content_type and 'multipart/form-data' in content_type:
+                    content_length = int(self.headers.get('Content-Length', 0))
+                    post_data = self.rfile.read(content_length)
 
-                    if eeg_file:
-                        try:
-                            file_data = eeg_file[0]
-                            disposition_header = self.headers.get('Content-Disposition')
-                            if disposition_header:
-                                _, params = cgi.parse_header(disposition_header)
-                                file_name = params.get('filename')
-                            else:
-                                file_name = 'eeg.edf'  
-                            if not file_name:
-                                raise ValueError("Filename not provided in the request")
+                    message_data = b'Content-Type: ' + content_type.encode('utf-8') + b'\r\n\r\n' + post_data
 
-                            save_path = os.path.join(self.base_path, file_name)
-                            with open(save_path, 'wb') as f:
-                                f.write(file_data)
-                            self.validate_eeg_file()
+                    parser = BytesParser(policy=default)
+                    message = parser.parsebytes(message_data)
 
-                            response = {'status': 'success'}
-                        except Exception as e:
-                            response = {'status': 'error', 'message': str(e)}
+                    if message.is_multipart():
+                        for part in message.iter_parts():
+                            content_disposition = part.get('Content-Disposition', '')
+                            if 'form-data' in content_disposition:
+                                name = part.get_param('name', header='content-disposition', unquote=True)
+                                filename = part.get_param('filename', header='content-disposition', unquote=True)
+                                payload = part.get_payload(decode=True)
+                                if name == 'eegFile' and payload:
+                                    if not filename:
+                                        filename = 'eeg.edf'
+                                    save_path = os.path.join(self.base_path, filename)
+                                    with open(save_path, 'wb') as f:
+                                        f.write(payload)
+                                    self.validate_eeg_file()
+                                    response = {'status': 'success'}
+                                    break
+                        else:
+                            response = {'status': 'error', 'message': 'No file uploaded'}
                     else:
-                        response = {'status': 'error', 'message': 'No file uploaded'}
-
+                        response = {'status': 'error', 'message': 'Expected multipart content'}
                 else:
                     response = {'status': 'error', 'message': 'Invalid content type'}
+
+                self.send_response(200)
+                self.send_header('Content-type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps(response).encode('utf-8'))
+                time.sleep(.1)
+                return
 
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
@@ -295,19 +296,17 @@ class NapviewRequestHandler(SimpleHTTPRequestHandler):
             self.wfile.write(json.dumps(response).encode('utf-8'))
             time.sleep(.1)
             return
-        
+
         except BrokenPipeError:
             self.logger.warning("Client disconnected before response was fully sent.", exc_info=True)
         except Exception as e:
             self.logger.error(f"Unexpected error: {e}", exc_info=True)
 
     def shutdown_server(self):
-        """Shut down the server."""
         self.logger.info("Shutdown: Initiating server shutdown...")
         self.server.shutdown()
         self.server.server_close()
         self.logger.info("Shutdown: Server shut down successfully.")
-
 
     def validate_usleep_token(self):
         try:
@@ -322,7 +321,7 @@ class NapviewRequestHandler(SimpleHTTPRequestHandler):
             self.config['api_token_valid'] = token_valid
             self.config_manager.save_config(self.config)
         return token_valid
-    
+
     def validate_eeg_file(self):
         try:
             self.config = self.config_manager.load_config(instance=self)
@@ -361,10 +360,9 @@ class NapviewRequestHandler(SimpleHTTPRequestHandler):
             info = mne.create_info(
                 ch_names=channel_names,
                 sfreq=eeg_info.sample_rate,
-                ch_types=['eeg'] * eeg_info.n_channels  
+                ch_types=['eeg'] * eeg_info.n_channels
             )
             raw = mne.io.RawArray(eeg_data, info)
-            # TODO: get actual eeg recording time
             raw.set_meas_date(datetime.now(timezone.utc))
 
             edf_file_path = os.path.join(output_directory, f'recording_{timestamp}.edf')
@@ -382,7 +380,7 @@ class NapviewRequestHandler(SimpleHTTPRequestHandler):
             result['message'] = "An error occurred while saving EEG data."
 
         return result
-    
+
     def save_results_files(self, output_directory, timestamp):
         result = {'success': True, 'messages': []}
         try:
@@ -415,39 +413,31 @@ class NapviewRequestHandler(SimpleHTTPRequestHandler):
 
         return result
 
-def main():
 
-    # init process manager
+def main():
     multiprocessing.set_start_method('spawn', True)
     process_manager = ProcessManager()
-    
-    # setup data path in the user's home directory
+
     try:
         base_path = Path.home() / "napview"
         base_path.mkdir(parents=True, exist_ok=True)
-        #logger.info(f'Init: data dir set up at {base_path}')
     except Exception as e:
         try:
             base_path = Path(__file__).resolve().parent
-            #logger.info(f'Init: data dir set up at {base_path}, because home directory setup failed')
         except Exception as e:
-            #logger.info(f'Init: data dir setup failed at both local dir and home dir, exiting. Error: {e}')
             raise
 
-    # start logger
     logger = configure_logger(base_path)
-    logger.info('')        
-    logger.info('')        
-    logger.info('Init: #############################################################')        
+    logger.info('')
+    logger.info('')
+    logger.info('Init: #############################################################')
     logger.warning('Init: #################### New run started ########################')
     logger.info('Init: #############################################################')
 
-    # init central config file + manager
     CONFIG_DEFAULTS = load_config_defaults(base_path)
     config_manager = ConfigManager(base_path, CONFIG_DEFAULTS)
     config_manager.save_config({'base_path': str(base_path)})
 
-    # create data directories 
     try:
         data_path = os.path.join(base_path, "data")
         os.makedirs(data_path, exist_ok=True)
@@ -459,17 +449,15 @@ def main():
     except Exception as e:
         logger.error(f'Failed to create data directories in {base_path} : {str(e)}', exc_info=True)
 
-    # empty data folders 
     data_path = os.path.join(base_path, "data")
     for root, dirs, files in os.walk(data_path):
         if root == os.path.join(data_path, "db"):
-            continue  
+            continue
         for file in files:
             file_path = os.path.join(root, file)
             os.remove(file_path)
             logger.info(f"Init: Deleted file: {file_path}")
 
-    # Check if simulation eeg file exists in base_path, if not, copy it from src/napview
     eeg_file_name = 'eeg.edf'
     src_eeg_file_path = Path(__file__).resolve().parent.parent.parent / 'napview' / eeg_file_name
 
@@ -482,7 +470,6 @@ def main():
         except Exception as e:
             logger.error(f"Init: Failed to copy {eeg_file_name}: {e}", exc_info=True)
 
-    # Check if CONFIG_DEFAULTS.txt exists, if not, create it
     config_defaults_path = os.path.join(base_path, 'CONFIG_DEFAULTS.txt')
     if not os.path.exists(config_defaults_path):
         try:
@@ -492,7 +479,7 @@ def main():
         except Exception as e:
             logger.error(f"Failed to create CONFIG_DEFAULTS.txt: {e}", exc_info=True)
 
-    def find_free_port(start_port,logger):
+    def find_free_port(start_port, logger):
         for attempt in range(5000):
             port = start_port + attempt
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -501,22 +488,19 @@ def main():
         logger.error("Failed to find a free port after 5000 attempts", exc_info=True)
         raise RuntimeError("Unable to find a free port after 5000 attempts")
 
-    # find free ports
-    gui_server_port = find_free_port(8145,logger)
-    visualizer_port = find_free_port(gui_server_port + 100,logger)
+    gui_server_port = find_free_port(8145, logger)
+    visualizer_port = find_free_port(gui_server_port + 100, logger)
     config_manager.save_config({
         'gui_server_port': gui_server_port,
         'visualizer_port': visualizer_port
     })
     logger.info(f'Init: Ports - - - gui: {gui_server_port},  visualizer: {visualizer_port}')
 
-    # intialize database
     db_handler = DatabaseHandler(base_path)
     db_file_path = db_handler.create_unique_db_filename(f"{base_path}/data/db/eeg_data.db")
     db_handler.setup_database(db_file_path, create_tables=True)
     config_manager.save_config({'db_file_path': db_file_path})
 
-    # init GUI server
     root_dir = Path(__file__).resolve().parent
     gui_server_handler = lambda *args, **kwargs: NapviewRequestHandler(
         *args,
@@ -529,13 +513,12 @@ def main():
         **kwargs
     )
 
-    # launch GUI in browser
     httpd = HTTPServer(('localhost', gui_server_port), gui_server_handler)
     print(f"Server started at http://localhost:{gui_server_port}")
     logger.info(f"Server started at http://localhost:{gui_server_port}")
-    time.sleep(2)
+    time.sleep(1)
     webbrowser.open(f"http://localhost:{gui_server_port}", new=1)
-    # TODO: open in built-in browser/electron
+
     try:
         logger.info("GUI: Server starting...")
         httpd.serve_forever()
@@ -550,6 +533,6 @@ def main():
         logger.info("GUI: Server closed successfully")
         process_manager.stop_processes()
 
+
 if __name__ == "__main__":
     main()
-
