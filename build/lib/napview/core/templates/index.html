@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- <script>
+        function autoRefresh() {
+            window.location.reload();
+        }
+        setInterval(autoRefresh, 1000); // 10000 milliseconds = 10 seconds
+    </script> -->
+    <script>
+        document.addEventListener('wheel', function (event) {
+            if (event.ctrlKey === true) {
+                event.preventDefault();
+            }
+        }, { passive: false });
+
+        document.addEventListener('keydown', function (event) {
+            if (event.ctrlKey === true && (event.key === '+' || event.key === '-' || event.key === '0' || event.key === '_')) {
+                event.preventDefault();
+            }
+        });
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+
+    <title>[napview:visualizer]</title>
+    <link rel="stylesheet" href="static/style.css">
+</head>
+
+<body>
+    <!-- <div class="sidebar">
+        <p class="title">Real-Time Sleep Staging Experiment Dashboard</p>
+        <button id="openModal1">Select EEG channels</button><br>
+        <button id="openModal2">Select EMG channels</button><br>
+        <button id="openModal3">Select EOG channels</button><br><br>
+        <a href="#" style="display: inline-block; margin-top: 10px;">Help</a>
+    </div> -->
+
+    <div id="chartWrapper"></div>
+    <div class="chart-container">
+        <div class="chart-block" id="d3Plot1"></div>
+        <div class="chart-block" id="d3Plot2"></div>
+        <!-- <div class="chart-block" id="d3Plot3"></div>
+        <div class="chart-block" id="d3Plot4"></div> -->
+
+    </div>
+</div>
+<!-- 
+    <div id="modal1" class="channel-modal">
+        <div class="modal-content">
+            <h2>Select EEG Channels</h2>
+            <form id="form1" action="/save-channels" method="POST">
+                <div id="checkbox-container1" class="checkbox-container"></div>
+                <button type="submit">Save</button>
+            </form>
+            <button id="closeModal1">Close</button>
+        </div>
+    </div>
+
+    <div id="modal2" class="channel-modal">
+        <div class="modal-content">
+            <h2>Select EMG Channels</h2>
+            <div id="checkbox-container2" class="checkbox-container"></div>
+            <button id="saveModal2">Save</button>
+            <button id="closeModal2">Close</button>
+        </div>
+    </div>
+
+    <div id="modal3" class="channel-modal">
+        <div class="modal-content">
+            <h2>Select EOG Channels</h2>
+            <div id="checkbox-container3" class="checkbox-container"></div>
+            <button id="saveModal3">Save</button>
+            <button id="closeModal3">Close</button>
+        </div>
+    </div> -->
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script type="module" src="static/execute_plot.js"></script>
+    <!-- <script src="static/channel-modal.js"></script> -->
+
+
+
+</body>
+
+</html>

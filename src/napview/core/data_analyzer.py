@@ -134,10 +134,8 @@ class Analyzer:
 
     def analyze_epoch_yasa(self, start_time):
 
-        try:
-            from yasa_staging_minimal import bandpower
-        except:
-            from .yasa_staging_minimal import bandpower
+
+        from .yasa_staging_minimal import bandpower
 
         def find_channel(channels, options):
             for option in options:
@@ -242,10 +240,7 @@ class Analyzer:
 
     def analyze_epoch_yasa_scorer(self, start_time):
 
-        try:
-            from yasa_staging_minimal import SleepStaging
-        except:
-            from .yasa_staging_minimal import SleepStaging
+        from .yasa_staging_minimal import SleepStaging
 
         def find_channels_by_keywords(channels, primary_keywords, fallback_keywords=None, max_channels=2):
             selected_channels = []
