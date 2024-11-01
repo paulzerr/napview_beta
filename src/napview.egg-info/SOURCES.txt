@@ -5,6 +5,7 @@ pyproject.toml
 setup.cfg
 setup.py
 src/napview/__init__.py
+src/napview/eeg.edf
 src/napview/napview.py
 src/napview.egg-info/PKG-INFO
 src/napview.egg-info/SOURCES.txt
