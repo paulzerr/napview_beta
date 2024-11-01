@@ -80,11 +80,11 @@ const chart4Config = {
 // Create instances of the DataPlotter class for each chart
 const chart1Plotter = new DataPlotter("d3Plot1", chart1Config);
 const chart2Plotter = new DataPlotter("d3Plot2", chart2Config);
-const chart3Plotter = new DataPlotter("d3Plot3", chart3Config);
-const chart4Plotter = new DataPlotter("d3Plot4", chart4Config);
+// const chart3Plotter = new DataPlotter("d3Plot3", chart3Config);
+// const chart4Plotter = new DataPlotter("d3Plot4", chart4Config);
 
 // Start plotting for each chart
 chart1Plotter.startPlotting();
 chart2Plotter.startPlotting();
-chart3Plotter.startPlotting();
-chart4Plotter.startPlotting();
+// chart3Plotter.startPlotting();
+// chart4Plotter.startPlotting();

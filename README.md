@@ -64,10 +64,17 @@ From a terminal or command prompt:
    napview
    ```
 
-Alternatively:
+**6. Alternatively:**
+
+Install dependencies manually:
 
    ```
-   python3 -m napview.py
+   pip install -r requirements.txt
+   ```
+Navigate to the cloned repository and start napview from there:
+
+   ``` 
+   python3 -m src/napview/napview.py
    ```
 
 

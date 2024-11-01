@@ -106,7 +106,7 @@
       statusSnippets.push(newMessage);
     }
 
-    statusSnippets.push(`Data directory location: <span class='green'>${state.base_path}</span>`);
+    statusSnippets.push(`3Data directory location: <span class='green'>${state.base_path}</span>`);
 
     if (!elements.eeg_amp.value) {
       statusSnippets.push("Data source: <span class='red'>Please select an amp (or simulator)</span>");
@@ -366,7 +366,8 @@
                     customMessage = "<span class='red'>An unknown error occurred. Please try again.</span><br><br>";
             }
         } else if (result.status === 'success') {
-            customMessage = "<span class='green'>Napview is starting in a new tab ...</span><br><br>";
+            const visualizerUrl = `http://127.0.0.1:${state.visualizer_port}`;
+            customMessage = `<span class='green'>Napview is starting in a new tab, otherwise navigate to </span><span class='green'><a href="${visualizerUrl}" target="_blank">${visualizerUrl}</a></span><br><br>`;
         }
         
     } catch (error) {
@@ -473,6 +474,15 @@
       tdInclude.appendChild(checkbox);
       tr.appendChild(tdInclude);
 
+      // Add this block for the preferred YASA channel radio button
+      const tdPreferredYasa = document.createElement('td');
+      const radio = document.createElement('input');
+      radio.type = 'radio';
+      radio.name = 'preferredYasaChannel';
+      radio.value = name;
+      tdPreferredYasa.appendChild(radio);
+      tr.appendChild(tdPreferredYasa);
+
       tbody.appendChild(tr);
     });
 
@@ -497,18 +507,26 @@
     const channelRows = document.querySelectorAll('#channelList tbody tr');
     const channelTypes = [];
     const channelIncludes = [];
+    let preferredYasaChannel = null;
 
     channelRows.forEach((row) => {
         const type = row.children[2].querySelector('select').value;
         const include = row.children[3].querySelector('input').checked;
+        const radio = row.children[4].querySelector('input[type="radio"]');
 
         channelTypes.push(type);
         channelIncludes.push(include ? '1' : '0');
+
+        if (radio.checked) {
+          preferredYasaChannel = radio.value;
+        }
+
     });
 
     const data = {
         channel_types: channelTypes.join(','),
         channel_includes: channelIncludes.join(','),
+        preferred_yasa_channel: preferredYasaChannel
     };
 
     await updateConfig(data);

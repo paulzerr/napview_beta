@@ -1,1 +1,0 @@
-from .core.napview_backend import main

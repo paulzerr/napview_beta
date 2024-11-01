@@ -147,9 +147,13 @@ class Analyzer:
             return None
 
         try:
-            bandpower_channel_name = find_channel(self.raw.ch_names, ["c3", "c4", "o1", "o2"])
-            if not bandpower_channel_name:
-                bandpower_channel_name = self.raw.ch_names[0]
+            preferred_yasa_channel = self.config.get('preferred_yasa_channel')
+            if preferred_yasa_channel and preferred_yasa_channel in self.raw.ch_names:
+                bandpower_channel_name = preferred_yasa_channel
+            else:
+                bandpower_channel_name = find_channel(self.raw.ch_names, ["c3", "c4", "o1", "o2"])
+                if not bandpower_channel_name:
+                    bandpower_channel_name = self.raw.ch_names[0]
 
             # spindle_channel_name = find_channel(self.raw.ch_names, ["c3", "c4"])
             # if not spindle_channel_name:
@@ -273,11 +277,22 @@ class Analyzer:
             eog_fallback_keywords = ["fp1", "fp2", "fpz"]
             emg_keywords = ["emg", "chin"]
 
-            eeg_channel = find_channels_by_keywords(self.raw.ch_names, eeg_keywords)
-            if not eeg_channel:
-                eeg_channel = self.raw.ch_names[0]
+            preferred_yasa_channel = self.config.get('preferred_yasa_channel')
+            if preferred_yasa_channel and preferred_yasa_channel in self.raw.ch_names:
+                eeg_channel = preferred_yasa_channel
             else:
-                eeg_channel = self.find_lowest_noise_channel(eeg_channel)
+                eeg_keywords = ["c3", "c4", "o1", "o2", "oz", "fp1", "fp2", "f3", "f4", "t3", "t4", "p3", "p4", "cz", "fz", "pz"]
+                eeg_channel = find_channels_by_keywords(self.raw.ch_names, eeg_keywords)
+                if not eeg_channel:
+                    eeg_channel = self.raw.ch_names[0]
+                else:
+                    eeg_channel = self.find_lowest_noise_channel(eeg_channel)
+
+            # eeg_channel = find_channels_by_keywords(self.raw.ch_names, eeg_keywords)
+            # if not eeg_channel:
+            #     eeg_channel = self.raw.ch_names[0]
+            # else:
+            #     eeg_channel = self.find_lowest_noise_channel(eeg_channel)
 
             eog_channel = find_channels_by_keywords(self.raw.ch_names, eog_primary_keywords, eog_fallback_keywords)
             if eog_channel:

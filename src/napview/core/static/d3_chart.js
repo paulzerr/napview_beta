@@ -94,6 +94,18 @@ svg.append("text")
         .attr("class", "y-axis grid")
         .call(yAxis);
 
+
+
+//////////////////////////////
+    gX.selectAll("text")
+        .style("font-size", "12px");
+    
+    gY.selectAll("text")
+        .style("font-size", "12px");
+//////////////////////////////
+
+
+
     const line = d3.line()
         .x(d => xScale(new Date(d.x)))
         .y(d => yScale(d.y))
