@@ -6,12 +6,12 @@ import numpy as np
 import mne
 
 
-try:
-    from database_handler import DatabaseHandler
-    from helpers import configure_logger, ConfigManager
-except:
-    from .database_handler import DatabaseHandler
-    from .helpers import configure_logger, ConfigManager
+# try:
+#     from database_handler import DatabaseHandler
+#     from helpers import configure_logger, ConfigManager
+# except:
+from .database_handler import DatabaseHandler
+from .helpers import configure_logger, ConfigManager
 
 class Analyzer:
 

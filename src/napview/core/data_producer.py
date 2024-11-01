@@ -6,10 +6,10 @@ from pylsl import StreamInfo, StreamOutlet
 from struct import unpack
 from pathlib import Path
 
-try:
-    from helpers import configure_logger, ConfigManager
-except:
-    from .helpers import configure_logger, ConfigManager
+# try:
+#     from helpers import configure_logger, ConfigManager
+# except:
+from .helpers import configure_logger, ConfigManager
 
 
 class DataProducer:

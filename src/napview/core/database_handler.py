@@ -5,10 +5,10 @@ import numpy as np
 import time
 import os
 
-try:
-    from helpers import configure_logger
-except:
-    from .helpers import configure_logger
+# try:
+#     from helpers import configure_logger
+# except:
+from .helpers import configure_logger
 
 # setup the database via peewee
 class EEGData(Model):

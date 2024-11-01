@@ -15,20 +15,20 @@ from email.parser import BytesParser
 from email.policy import default
 
 
-try:
-    from data_producer import DataProducer
-    from data_recorder import DataRecorder
-    from data_analyzer import Analyzer
-    from data_visualizer import Visualizer
-    from database_handler import DatabaseHandler
-    from helpers import configure_logger, ConfigManager
-except:
-    from .data_producer import DataProducer
-    from .data_recorder import DataRecorder
-    from .data_analyzer import Analyzer
-    from .data_visualizer import Visualizer
-    from .database_handler import DatabaseHandler
-    from .helpers import configure_logger, ConfigManager
+# try:
+#     from data_producer import DataProducer
+#     from data_recorder import DataRecorder
+#     from data_analyzer import Analyzer
+#     from data_visualizer import Visualizer
+#     from database_handler import DatabaseHandler
+#     from helpers import configure_logger, ConfigManager
+# except:
+from .data_producer import DataProducer
+from .data_recorder import DataRecorder
+from .data_analyzer import Analyzer
+from .data_visualizer import Visualizer
+from .database_handler import DatabaseHandler
+from .helpers import configure_logger, ConfigManager
 
 
 def load_config_defaults(base_path):

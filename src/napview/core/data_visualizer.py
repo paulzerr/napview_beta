@@ -7,10 +7,10 @@ import socket
 import time
 from threading import Timer
 
-try:
-    from helpers import configure_logger, ConfigManager
-except:
-    from .helpers import configure_logger, ConfigManager
+# try:
+#     from helpers import configure_logger, ConfigManager
+# except:
+from .helpers import configure_logger, ConfigManager
 
 
 class Visualizer:

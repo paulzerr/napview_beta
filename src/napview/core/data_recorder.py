@@ -3,12 +3,12 @@ from pylsl import resolve_byprop, StreamInlet
 from peewee import *
 import json
 
-try:
-    from database_handler import DatabaseHandler
-    from helpers import configure_logger, ConfigManager
-except:
-    from .database_handler import DatabaseHandler
-    from .helpers import configure_logger, ConfigManager
+# try:
+#     from database_handler import DatabaseHandler
+#     from helpers import configure_logger, ConfigManager
+# except:
+from .database_handler import DatabaseHandler
+from .helpers import configure_logger, ConfigManager
 
 
 class DataRecorder:
