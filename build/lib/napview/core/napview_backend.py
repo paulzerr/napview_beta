@@ -245,6 +245,7 @@ class NapviewRequestHandler(SimpleHTTPRequestHandler):
 
                 shutdown_thread = threading.Thread(target=self.shutdown_server)
                 shutdown_thread.start()
+                self.logger.info("Server shut down successfully.")
                 return
 
             elif self.path == '/update_config':
@@ -311,7 +312,6 @@ class NapviewRequestHandler(SimpleHTTPRequestHandler):
             self.logger.error(f"Unexpected error: {e}", exc_info=True)
 
     def shutdown_server(self):
-        time.sleep(2)
         self.logger.info("Shutdown: Initiating server shutdown...")
         self.server.shutdown()
         self.server.server_close()
@@ -535,8 +535,10 @@ def main():
     except Exception as e:
         logger.error(f"GUI: An unexpected error occurred: {str(e)}", exc_info=True)
     finally:
+        logger.info("GUI: Server shutting down...")
         httpd.shutdown()
         httpd.server_close()
+        logger.info("GUI: Server closed successfully")
         process_manager.stop_processes()
 
 

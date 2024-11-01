@@ -1,0 +1,2 @@
+[console_scripts]
+napview = napview:main

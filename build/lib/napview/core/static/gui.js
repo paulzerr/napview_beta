@@ -92,10 +92,8 @@
 
 
 
-  async function updateStatusText(newMessage = '') {
-
-    await loadConfig();
-
+  function updateStatusText(newMessage = '') {
+    loadConfig();
     const statusSnippets = [];
 
     statusSnippets.push("");
@@ -316,7 +314,7 @@
       customMessage = "<span class='red'>An error occurred while shutting down and saving recordings. Please try again.</span><br><br>";
       elements.startButton.disabled = false;
     }
-    await updateStatusText(customMessage);
+    updateStatusText(customMessage);
   }
 
   function showApiTokenDialog() {
@@ -374,7 +372,7 @@
         customMessage = "<span class='red'>An error occurred while starting the application. Please try again.</span><br><br>" + elements.statusLabel.innerHTML;
         elements.startButton.disabled = false;
       }
-    await updateStatusText(customMessage);
+    updateStatusText(customMessage);
 }
 
   async function showChannelConfigDialog() {
@@ -529,7 +527,7 @@
       });
       const result = await response.json();
       await loadConfig();
-      await updateStatusText();
+      updateStatusText();
     } catch (error) {
       console.error('Error stopping data producer:', error);
     }
@@ -543,10 +541,10 @@
         method: 'POST'
       });
       const result = await response.json();
-      await updateStatusText()
+      updateStatusText()
     } catch (error) {
       console.error('Error checking EEG file:', error);
-      await updateStatusText();
+      updateStatusText();
     }
   }
 
