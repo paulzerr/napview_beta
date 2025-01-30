@@ -9,6 +9,16 @@
 ```napview``` is the nightshift experimenter's friend. 
 
 
+## A screenshot of the GUI
+![GUI Screenshot](gui.png)
+
+
+## An example of the real-time display
+
+![Result Screenshot](result.png)
+
+
+
 ## Installation
 
 **1. Make sure you have [```Python 3.8```](https://www.python.org/downloads/) or later installed on your system.**<br>
