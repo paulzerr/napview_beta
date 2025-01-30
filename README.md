@@ -10,12 +10,12 @@
 
 
 ## A screenshot of the GUI
-![GUI Screenshot](gui.png)
+![GUI Screenshot](images/gui.png)
 
 
 ## An example of the real-time display
 
-![Result Screenshot](result.png)
+![Result Screenshot](images/result.png)
 
 
 
