@@ -9,7 +9,7 @@
 ```napview``` is the nightshift experimenter's friend. 
 
 
-## A screenshot of the GUI
+## The GUI
 ![GUI Screenshot](images/gui.png)
 
 
@@ -20,6 +20,10 @@
 
 
 ## Installation
+
+Note: Windows users in restricted environments without admin rights can download a standalone release <a href="https://drive.google.com/file/d/1fGeBAwBIcwcncrhgBviIv79pLadaPtQc/view?usp=sharing">here</a>.
+
+
 
 **1. Make sure you have [```Python 3.8```](https://www.python.org/downloads/) or later installed on your system.**<br>
 
