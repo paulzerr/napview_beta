@@ -55,37 +55,31 @@ or
      source napview_venv/bin/activate
 
    Windows:
+```
+napview_venv\Scripts\activate.bat rem for Command Prompt (cmd)
+```
 
-     napview_venv\Scripts\activate.bat
+```
+napview_venv\Scripts\Activate.ps1 # for PowerShell
+```
 
-or, if you're using Powershell:
-
-     napview_venv\Scripts\Activate.ps1
 
 **4. Install napview:**
    
-Ensure that you are in the directory where you cloned the repository, and install:
+   ```
+   pip install -r requirements.txt
+   ```
 
-   ```
-   pip install .
-   ```
 
 **5. Start napview**
 
-From a terminal or command prompt:
+Option 1: From a terminal or command prompt:
    
    ```
    napview
    ```
 
-**6. Alternatively:**
-
-Install dependencies manually:
-
-   ```
-   pip install -r requirements.txt
-   ```
-Navigate to the cloned repository and start napview from there:
+Option 2: Navigate to the cloned repository and start napview from there:
 
    ``` 
    python3 -m src/napview/napview.py
